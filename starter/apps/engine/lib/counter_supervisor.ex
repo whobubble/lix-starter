@@ -10,6 +10,7 @@ defmodule Engine.CounterSupervisor do
   def start_counter(name, initial), do: Supervisor.start_child(__MODULE__, [name, initial])
 
   def stop_counter(name) do
+    :ets.delete(:counter_state, name)
     Supervisor.terminate_child(__MODULE__, pid_for_counter(name))
   end
 
