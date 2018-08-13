@@ -7,14 +7,14 @@ defmodule Engine.CounterSupervisor do
 
   def init(:ok), do: Supervisor.init([Counter], strategy: :simple_one_for_one)
 
-  def start_counter(initial), do: Supervisor.start_child(__MODULE__, [initial])
+  def start_counter(name, initial), do: Supervisor.start_child(__MODULE__, [name, initial])
 
-  def stop_counter() do
-    Supervisor.terminate_child(__MODULE__, pid_for_counter())
+  def stop_counter(name) do
+    Supervisor.terminate_child(__MODULE__, pid_for_counter(name))
   end
 
-  defp pid_for_counter() do
-    Counter.via_tuple()
+  defp pid_for_counter(name) do
+    Counter.via_tuple(name)
     |> GenServer.whereis()
   end
 end
