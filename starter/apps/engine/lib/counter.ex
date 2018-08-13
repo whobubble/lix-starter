@@ -5,10 +5,14 @@ defmodule Engine.Counter do
 
   def via_tuple(name), do: {:via, Registry, {Registry.Counter, name}}
 
-  def start_link(name, initial) when is_binary(name) and is_integer(initial) and initial >= 0,
-    do: GenServer.start_link(__MODULE__, %{count: initial, name: name}, name: via_tuple(name))
+  def start_link(name, initial_count)
+      when is_binary(name) and is_integer(initial_count) and initial_count >= 0,
+      do: GenServer.start_link(__MODULE__, {name, initial_count}, name: via_tuple(name))
 
-  def init(initial_state), do: {:ok, initial_state, @timeout}
+  def init({name, count}) do
+    send(self(), {:set_state, name, count})
+    {:ok, fresh_state(name, count)}
+  end
 
   def inc(counter), do: GenServer.cast(counter, :inc)
 
@@ -20,10 +24,29 @@ defmodule Engine.Counter do
     {:stop, {:shutdown, :timeout}, state}
   end
 
+  def handle_info({:set_state, name, count}, _state_data) do
+    state_data =
+      case(:ets.lookup(:counter_state, name)) do
+        [] -> fresh_state(name, count)
+        [{_key, state}] -> state
+      end
+
+    :ets.insert(:counter_state, {name, state_data})
+
+    {:noreply, state_data, @timeout}
+  end
+
   def handle_cast(:inc, state), do: {:noreply, update_in(state.count, fn c -> c + 1 end)}
 
   def handle_cast(:dec, 0), do: {:noreply, 0}
   def handle_cast(:dec, state), do: {:noreply, update_in(state.count, fn c -> c - 1 end)}
 
-  def handle_call(:get, _from, state), do: {:reply, state.count, state}
+  def handle_call(:get, _from, state), do: reply_success(state, state.count)
+
+  def reply_success(state_data, reply) do
+    :ets.insert(:counter_state, {state_data.name, state_data})
+    {:reply, reply, state_data, @timeout}
+  end
+
+  defp fresh_state(name, initial), do: %{name: name, count: initial}
 end
