@@ -1,7 +1,7 @@
 defmodule Engine.Counter do
   use GenServer, start: {__MODULE__, :start_link, []}, restart: :transient
 
-  @timeout 15000
+  @timeout 60 * 60 * 24 * 1000
 
   def via_tuple(), do: {:via, Registry, {Registry.Counter, "counter"}}
 
@@ -15,6 +15,10 @@ defmodule Engine.Counter do
   def dec(counter), do: GenServer.cast(counter, :dec)
 
   def get(counter), do: GenServer.call(counter, :get)
+
+  def handle_info(:timeout, state) do
+    {:stop, {:shutdown, :timeout}, state}
+  end
 
   def handle_cast(:inc, state), do: {:noreply, state + 1}
 
