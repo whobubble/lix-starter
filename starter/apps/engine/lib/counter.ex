@@ -21,9 +21,9 @@ defmodule Engine.Counter do
 
   def terminate(_reason, _state), do: :ok
 
-  def inc(counter), do: GenServer.cast(counter, :inc)
+  def inc(counter), do: GenServer.call(counter, :inc)
 
-  def dec(counter), do: GenServer.cast(counter, :dec)
+  def dec(counter), do: GenServer.call(counter, :dec)
 
   def get(counter), do: GenServer.call(counter, :get)
 
@@ -43,10 +43,17 @@ defmodule Engine.Counter do
     {:noreply, state_data, @timeout}
   end
 
-  def handle_cast(:inc, state), do: noreply_success(update_in(state.count, fn c -> c + 1 end))
+  def handle_call(:inc, _from, state) do
+    new_state = update_in(state.count, fn c -> c + 1 end)
+    reply_success(new_state, new_state.count)
+  end
 
-  def handle_cast(:dec, %{count: 0, name: name}), do: noreply_success(%{count: 0, name: name})
-  def handle_cast(:dec, state), do: noreply_success(update_in(state.count, fn c -> c - 1 end))
+  def handle_call(:dec, _from, state = %{count: 0, name: _name}), do: reply_success(state, 0)
+
+  def handle_call(:dec, _from, state) do
+    new_state = update_in(state.count, fn c -> c - 1 end)
+    reply_success(new_state, new_state.count)
+  end
 
   def handle_call(:get, _from, state), do: reply_success(state, state.count)
 

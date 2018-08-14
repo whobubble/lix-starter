@@ -1,7 +1,7 @@
 defmodule EngineInterfaceWeb.CounterChannel do
   use EngineInterfaceWeb, :channel
 
-  alias Engine.{Counter, CounterSupervisor}
+  alias Engine.CounterSupervisor
 
   def join("counter:" <> _player, _payload, socket) do
     {:ok, socket}
