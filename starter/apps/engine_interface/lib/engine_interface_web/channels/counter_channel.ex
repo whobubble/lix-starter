@@ -1,15 +1,10 @@
 defmodule EngineInterfaceWeb.CounterChannel do
   use EngineInterfaceWeb, :channel
 
-  alias Engine.CounterSupervisor
+  alias Engine.{Counter, CounterSupervisor}
 
   def join("counter:" <> _player, _payload, socket) do
     {:ok, socket}
-  end
-
-  def handle_in("hello", payload, socket) do
-    broadcast!(socket, "said_hello", payload)
-    {:noreply, socket}
   end
 
   def handle_in("new_counter", _payload, socket) do
@@ -23,4 +18,17 @@ defmodule EngineInterfaceWeb.CounterChannel do
         {:reply, {:error, %{reason: inspect(reason)}}, socket}
     end
   end
+
+  def handle_in("inc", _payload, socket) do
+    case Counter.inc(via(socket.topic)) do
+      :ok ->
+        broadcast!(socket, "counter_incR", %{message: "Counter increased"})
+        {:noreply, socket}
+
+      :error ->
+        {:reply, :error, socket}
+    end
+  end
+
+  defp via("counter:" <> name), do: Counter.via_tuple(name)
 end

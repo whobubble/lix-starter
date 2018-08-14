@@ -46,6 +46,10 @@ counter_channel.on("said_hello", response => {
   console.log("Returned Greeting:", response.message)
 })
 
+counter_channel.on("counter_inc", response => {
+  console.log("Counter inc:", response.message)
+})
+
 function new_counter(channel) {
   channel
     .push("new_counter")
@@ -55,4 +59,10 @@ function new_counter(channel) {
     .receive("error", response => {
       console.log("Unable to start a new counter.", response)
     })
+}
+
+function inc_counter(channel, player) {
+  channel.push("inc").receive("error", response => {
+    console.log("Unable to inc counter", response)
+  })
 }

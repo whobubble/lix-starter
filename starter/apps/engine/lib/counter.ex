@@ -45,22 +45,17 @@ defmodule Engine.Counter do
 
   def handle_call(:inc, _from, state) do
     new_state = update_in(state.count, fn c -> c + 1 end)
-    reply_success(new_state, new_state.count)
+    reply_success(new_state, :ok)
   end
 
-  def handle_call(:dec, _from, state = %{count: 0, name: _name}), do: reply_success(state, 0)
+  def handle_call(:dec, _from, state = %{count: 0, name: _name}), do: reply_success(state, :ok)
 
   def handle_call(:dec, _from, state) do
     new_state = update_in(state.count, fn c -> c - 1 end)
-    reply_success(new_state, new_state.count)
+    reply_success(new_state, :ok)
   end
 
-  def handle_call(:get, _from, state), do: reply_success(state, state.count)
-
-  def noreply_success(state_data) do
-    :ets.insert(:counter_state, {state_data.name, state_data})
-    {:noreply, state_data, @timeout}
-  end
+  def handle_call(:get, _from, state), do: reply_success(state, :ok)
 
   def reply_success(state_data, reply) do
     :ets.insert(:counter_state, {state_data.name, state_data})
