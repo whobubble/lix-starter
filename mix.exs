@@ -5,7 +5,8 @@ defmodule Starter.MixProject do
     [
       apps_path: "apps",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      dialyzer: [ignore_warnings: "dialyzer.ignore-warnings"]
     ]
   end
 
@@ -15,6 +16,10 @@ defmodule Starter.MixProject do
   #
   # Run "mix help deps" for examples and options.
   defp deps do
-    [{:credo, "~> 0.8.8", only: [:dev, :test], runtime: false}]
+    [
+      {:credo, "~> 0.8.8", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.18.0", only: :dev, runtime: false},
+      {:inch_ex, "~> 0.5", only: [:dev], runtime: false}
+    ]
   end
 end
