@@ -6,6 +6,7 @@ defmodule EngineInterfaceWeb.CounterChannel do
   alias Engine.{Counter, CounterSupervisor}
   alias EngineInterfaceWeb.Presence
 
+  @spec join(any(), any(), any()) :: no_return()
   def join("counter:" <> _player, %{"screen_name" => screen_name}, socket) do
     if authorized?(socket, screen_name) do
       send(self(), {:after_join, screen_name})
@@ -66,6 +67,7 @@ defmodule EngineInterfaceWeb.CounterChannel do
 
   defp via("counter:" <> name), do: Counter.via_tuple(name)
 
+  @spec number_of_users(any()) :: no_return()
   defp number_of_users(socket) do
     socket
     |> Presence.list()
@@ -73,13 +75,14 @@ defmodule EngineInterfaceWeb.CounterChannel do
     |> length()
   end
 
+  @spec authorized?(any(), binary()) :: no_return()
+  defp authorized?(socket, screen_name) do
+    number_of_users(socket) < 2 && !existing_user?(socket, screen_name)
+  end
+
   defp existing_user?(socket, screen_name) do
     socket
     |> Presence.list()
     |> Map.has_key?(screen_name)
-  end
-
-  defp authorized?(socket, screen_name) do
-    number_of_users(socket) < 2 && !existing_user?(socket, screen_name)
   end
 end

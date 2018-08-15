@@ -7,6 +7,7 @@ defmodule Engine.CounterSupervisor do
 
   def start_link(_options), do: Supervisor.start_link(__MODULE__, :ok, name: __MODULE__)
 
+  @spec init(any()) :: no_return()
   def init(:ok), do: Supervisor.init([Counter], strategy: :simple_one_for_one)
 
   def start_counter(name, initial), do: Supervisor.start_child(__MODULE__, [name, initial])
