@@ -6,7 +6,8 @@ defmodule Starter.MixProject do
       apps_path: "apps",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      dialyzer: [ignore_warnings: "dialyzer.ignore-warnings"]
+      dialyzer: [ignore_warnings: "dialyzer.ignore-warnings"],
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -19,7 +20,7 @@ defmodule Starter.MixProject do
     [
       {:credo, "~> 0.8.8", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.18.0", only: :dev, runtime: false},
-      {:inch_ex, "~> 0.5", only: [:dev], runtime: false}
+      {:excoveralls, "~> 0.9", only: :test}
     ]
   end
 end
