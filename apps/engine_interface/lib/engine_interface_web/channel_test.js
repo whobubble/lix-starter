@@ -1,5 +1,10 @@
 var phoenix = require("phoenix")
-var socket = new phoenix.Socket("/socket", {})
+var socket = new phoenix.Socket("/socket", {
+  params: {
+    userToken:
+      "oCu2cZMKj4g5/S7AILBlLhSSiXMR5yMGEO/fGmGbHoq1X3uDa1JUGRoHQaS0Tn1w"
+  }
+})
 socket.connect()
 
 function new_channel(subtopic, screen_name) {
