@@ -20,7 +20,8 @@ defmodule Starter.MixProject do
     [
       {:credo, "~> 0.8.8", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.18.0", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.9", only: :test}
+      {:excoveralls, "~> 0.9", only: :test},
+      {:inch_ex, "~> 0.5", only: [:dev], runtime: false}
     ]
   end
 end
