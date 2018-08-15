@@ -17,7 +17,8 @@ function join(channel) {
     })
 }
 
-var counter_channel = new_channel("simple", "user2")
+// var counter_channel = new_channel("simple", "user1")
+// var counter_channel = new_channel("simple", "user2")
 join(counter_channel)
 
 function leave(channel) {
@@ -52,6 +53,10 @@ counter_channel.on("counter_inc", response => {
 
 counter_channel.on("counter_dec", response => {
   console.log("Counter dec:", response.message)
+})
+
+counter_channel.on("subscribers", response => {
+  console.log("Subscribers: ", response)
 })
 
 function new_counter(channel) {

@@ -2,9 +2,16 @@ defmodule EngineInterfaceWeb.CounterChannel do
   use EngineInterfaceWeb, :channel
 
   alias Engine.{Counter, CounterSupervisor}
+  alias EngineInterfaceWeb.Presence
 
-  def join("counter:" <> _player, _payload, socket) do
+  def join("counter:" <> _player, %{"screen_name" => screen_name}, socket) do
+    send(self(), {:after_join, screen_name})
     {:ok, socket}
+  end
+
+  def handle_info({:after_join, name}, socket) do
+    {:ok, _} = Presence.track(socket, name, %{online_at: inspect(System.system_time(:seconds))})
+    {:noreply, socket}
   end
 
   def handle_in("new_counter", _payload, socket) do
@@ -44,6 +51,11 @@ defmodule EngineInterfaceWeb.CounterChannel do
   def handle_in("get", _payload, socket) do
     count = Counter.get(via(socket.topic))
     {:reply, {:ok, %{count: count}}, socket}
+  end
+
+  def handle_in("show_subscribers", _payload, socket) do
+    broadcast!(socket, "subscribers", Presence.list(socket))
+    {:noreply, socket}
   end
 
   defp via("counter:" <> name), do: Counter.via_tuple(name)

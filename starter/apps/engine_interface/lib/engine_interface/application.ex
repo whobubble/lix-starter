@@ -10,6 +10,7 @@ defmodule EngineInterface.Application do
     children = [
       # Start the endpoint when the application starts
       supervisor(EngineInterfaceWeb.Endpoint, []),
+      supervisor(EngineInterfaceWeb.Presence, [])
       # Start your own worker by calling: EngineInterface.Worker.start_link(arg1, arg2, arg3)
       # worker(EngineInterface.Worker, [arg1, arg2, arg3]),
     ]
