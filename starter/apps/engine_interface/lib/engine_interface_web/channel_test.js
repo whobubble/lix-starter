@@ -76,3 +76,14 @@ function dec_counter(channel) {
     console.log("Unable to dec counter", response)
   })
 }
+
+function get_counter(channel) {
+  channel
+    .push("get")
+    .receive("ok", response => {
+      console.log("current counter is: ", response.count)
+    })
+    .receive("error", response => {
+      console.log("Unable to get counter", response)
+    })
+}

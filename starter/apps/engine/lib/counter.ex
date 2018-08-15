@@ -55,7 +55,7 @@ defmodule Engine.Counter do
     reply_success(new_state, :ok)
   end
 
-  def handle_call(:get, _from, state), do: reply_success(state, :ok)
+  def handle_call(:get, _from, state), do: reply_success(state, state.count)
 
   def reply_success(state_data, reply) do
     :ets.insert(:counter_state, {state_data.name, state_data})

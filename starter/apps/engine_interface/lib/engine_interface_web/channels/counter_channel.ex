@@ -41,5 +41,10 @@ defmodule EngineInterfaceWeb.CounterChannel do
     end
   end
 
+  def handle_in("get", _payload, socket) do
+    count = Counter.get(via(socket.topic))
+    {:reply, {:ok, %{count: count}}, socket}
+  end
+
   defp via("counter:" <> name), do: Counter.via_tuple(name)
 end
