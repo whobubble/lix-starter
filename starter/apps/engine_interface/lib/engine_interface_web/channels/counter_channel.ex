@@ -22,7 +22,18 @@ defmodule EngineInterfaceWeb.CounterChannel do
   def handle_in("inc", _payload, socket) do
     case Counter.inc(via(socket.topic)) do
       :ok ->
-        broadcast!(socket, "counter_incR", %{message: "Counter increased"})
+        broadcast!(socket, "counter_inc", %{message: "Counter increased"})
+        {:noreply, socket}
+
+      :error ->
+        {:reply, :error, socket}
+    end
+  end
+
+  def handle_in("dec", _payload, socket) do
+    case Counter.dec(via(socket.topic)) do
+      :ok ->
+        broadcast!(socket, "counter_dec", %{message: "Counter decreased"})
         {:noreply, socket}
 
       :error ->

@@ -50,6 +50,10 @@ counter_channel.on("counter_inc", response => {
   console.log("Counter inc:", response.message)
 })
 
+counter_channel.on("counter_dec", response => {
+  console.log("Counter dec:", response.message)
+})
+
 function new_counter(channel) {
   channel
     .push("new_counter")
@@ -61,8 +65,14 @@ function new_counter(channel) {
     })
 }
 
-function inc_counter(channel, player) {
+function inc_counter(channel) {
   channel.push("inc").receive("error", response => {
     console.log("Unable to inc counter", response)
+  })
+}
+
+function dec_counter(channel) {
+  channel.push("dec").receive("error", response => {
+    console.log("Unable to dec counter", response)
   })
 }
