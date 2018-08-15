@@ -1,4 +1,6 @@
 defmodule Engine.Counter do
+  @moduledoc false
+
   use GenServer, start: {__MODULE__, :start_link, []}, restart: :transient
 
   @timeout 60 * 60 * 24 * 1000
@@ -48,7 +50,7 @@ defmodule Engine.Counter do
     reply_success(new_state, :ok)
   end
 
-  def handle_call(:dec, _from, state = %{count: 0, name: _name}), do: reply_success(state, :ok)
+  def handle_call(:dec, _from, %{count: 0, name: _name} = state), do: reply_success(state, :ok)
 
   def handle_call(:dec, _from, state) do
     new_state = update_in(state.count, fn c -> c - 1 end)

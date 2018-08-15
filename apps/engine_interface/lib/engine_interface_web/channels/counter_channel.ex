@@ -1,4 +1,6 @@
 defmodule EngineInterfaceWeb.CounterChannel do
+  @moduledoc false
+
   use EngineInterfaceWeb, :channel
 
   alias Engine.{Counter, CounterSupervisor}

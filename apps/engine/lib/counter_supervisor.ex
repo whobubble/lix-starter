@@ -1,4 +1,6 @@
 defmodule Engine.CounterSupervisor do
+  @moduledoc false
+
   use Supervisor
 
   alias Engine.Counter
@@ -15,7 +17,9 @@ defmodule Engine.CounterSupervisor do
   end
 
   defp pid_for_counter(name) do
-    Counter.via_tuple(name)
+    via = Counter.via_tuple(name)
+
+    via
     |> GenServer.whereis()
   end
 end
