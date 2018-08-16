@@ -13,12 +13,9 @@ config :engine_interface, EngineInterfaceWeb.Endpoint,
   check_origin: false,
   watchers: [
     node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--watch",
-      "--config",
-      "webpack.config.js",
-      "--colors",
-      "--progress",
+      "node_modules/brunch/bin/brunch",
+      "watch",
+      "--stdin",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]
