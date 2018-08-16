@@ -39,7 +39,3 @@
     </ul>
   </div>
 </div>
-
-<div id="hello-world">
-  {{message}}
-</div>
