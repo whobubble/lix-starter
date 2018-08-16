@@ -14,9 +14,11 @@ config :engine_interface, EngineInterfaceWeb.Endpoint,
   watchers: [
     node: [
       "node_modules/webpack/bin/webpack.js",
-      "--config",
-      "./node_modules/@vue/cli-service/webpack.config.js",
       "--watch",
+      "--config",
+      "webpack.config.js",
+      "--colors",
+      "--progress",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]
@@ -54,3 +56,15 @@ config :logger, :console, format: "[$level] $message\n"
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
+
+# watchers: [
+#   node: [
+#     "node_modules/webpack/bin/webpack.js",
+#     "--watch",
+#     "--config",
+#     "webpack.config.js",
+#     "--colors",
+#     "--progress",
+#     cd: Path.expand("../assets", __DIR__)
+#   ]
+# ]
