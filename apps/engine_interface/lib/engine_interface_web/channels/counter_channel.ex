@@ -80,6 +80,7 @@ defmodule EngineInterfaceWeb.CounterChannel do
     number_of_users(socket) < 2 && !existing_user?(socket, screen_name)
   end
 
+  @dialyzer {:nowarn_function, existing_user?: 2}
   defp existing_user?(socket, screen_name) do
     socket
     |> Presence.list()
