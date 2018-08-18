@@ -57,7 +57,9 @@ defmodule EngineInterfaceWeb.CounterChannel do
 
   def handle_in("get", _payload, socket) do
     count = Counter.get(via(socket.topic))
-    {:reply, {:ok, %{count: count}}, socket}
+    broadcast!(socket, "counter_get", %{count: count})
+    {:noreply, socket}
+    # {:reply, {:ok, %{count: count}}, socket}
   end
 
   def handle_in("show_subscribers", _payload, socket) do
@@ -82,8 +84,9 @@ defmodule EngineInterfaceWeb.CounterChannel do
 
   @dialyzer {:nowarn_function, existing_user?: 2}
   defp existing_user?(socket, screen_name) do
-    socket
-    |> Presence.list()
-    |> Map.has_key?(screen_name)
+    false
+    # socket
+    # |> Presence.list()
+    # |> Map.has_key?(screen_name)
   end
 end
