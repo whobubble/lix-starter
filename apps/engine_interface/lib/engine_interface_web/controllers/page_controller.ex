@@ -4,7 +4,7 @@ defmodule EngineInterfaceWeb.PageController do
   alias Engine.CounterSupervisor
 
   def index(conn, _params) do
-    render(conn, "index.html")
+    Plug.Conn.send_file(conn, 200, Path.expand("./priv/static/dist/index.html"))
   end
 
   def test(conn, %{"name" => name, "count" => count}) do

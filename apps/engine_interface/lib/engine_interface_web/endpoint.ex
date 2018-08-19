@@ -1,43 +1,60 @@
 defmodule EngineInterfaceWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :engine_interface
 
-  socket "/socket", EngineInterfaceWeb.UserSocket
+  socket("/socket", EngineInterfaceWeb.UserSocket)
 
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phoenix.digest
   # when deploying your static files in production.
-  plug Plug.Static,
-    at: "/", from: :engine_interface, gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+  # plug(
+  #   Plug.Static,
+  #   at: "/",
+  #   from: :engine_interface,
+  #   gzip: false,
+  #   only: ~w(css fonts images js favicon.ico robots.txt)
+  # )
+
+  plug(
+    Plug.Static,
+    at: "/",
+    from: {:engine_interface, "priv/static/dist"},
+    gzip: false,
+    only_matching:
+      ~w(css fonts images js favicon.ico robots.txt index.html service-worker.js precache-manifest 0 1 2 3 4 5 6 7 8 9)
+  )
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
-    socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
-    plug Phoenix.LiveReloader
-    plug Phoenix.CodeReloader
+    socket("/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket)
+    plug(Phoenix.LiveReloader)
+    plug(Phoenix.CodeReloader)
   end
 
-  plug Plug.Logger
+  plug(Plug.Logger)
 
-  plug Plug.Parsers,
+  plug(
+    Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
     json_decoder: Poison
+  )
 
-  plug Plug.MethodOverride
-  plug Plug.Head
+  plug(Plug.MethodOverride)
+  plug(Plug.Head)
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
-  plug Plug.Session,
+  plug(
+    Plug.Session,
     store: :cookie,
     key: "_engine_interface_key",
     signing_salt: "FVkTj4wg"
+  )
 
-  plug EngineInterfaceWeb.Router
+  plug(EngineInterfaceWeb.Router)
 
   @doc """
   Callback invoked for dynamically configuring the endpoint.
