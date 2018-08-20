@@ -9,6 +9,7 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
+    "bulma": "^0.7.1",
     "phoenix-socket": "^1.2.3",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1"
