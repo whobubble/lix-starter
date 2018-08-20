@@ -18,10 +18,9 @@ defmodule EngineInterfaceWeb.Endpoint do
   plug(
     Plug.Static,
     at: "/",
-    from: {:engine_interface, "priv/static/dist"},
+    from: {:engine_interface, "priv/static"},
     gzip: false,
-    only_matching:
-      ~w(css fonts images js favicon.ico robots.txt index.html service-worker.js precache-manifest 0 1 2 3 4 5 6 7 8 9)
+    only_matching: ~w(css fonts img js favicon.ico robots.txt index.html logo.png)
   )
 
   # Code reloading can be explicitly enabled under the

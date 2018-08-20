@@ -16,3 +16,17 @@ Options that are not included
 - Prepared option to integrate blockchain platforms like Waves
 - Prepared option to integrate PostgreSQL setup (useable via Gigalixir)
 - Prepared option to integrate GraphQL
+
+Design problems:
+
+- templating (Vue Single file Components)
+- free wheeling (Bulma)
+
+to add:
+
+- bulma
+- cypress.js
+- ecto
+- cordova
+- elixir unit and doc tests
+- elixir property tests
