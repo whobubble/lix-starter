@@ -84,9 +84,8 @@ defmodule EngineInterfaceWeb.CounterChannel do
 
   @dialyzer {:nowarn_function, existing_user?: 2}
   defp existing_user?(socket, screen_name) do
-    false
-    # socket
-    # |> Presence.list()
-    # |> Map.has_key?(screen_name)
+    socket
+    |> Presence.list()
+    |> Map.has_key?(screen_name)
   end
 end
